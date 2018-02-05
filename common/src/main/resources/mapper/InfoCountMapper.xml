@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hwua.common.mapper.InfoCountMapper">
+
+    <select id="queryPictureCount" resultType="int">
+        SELECT count(id) FROM img WHERE status=1
+    </select>
+    <select id="queryPictureCount1" resultType="int">
+        SELECT count(id) FROM img WHERE status=1 AND TO_DAYS(createtime) = TO_DAYS(NOW())
+    </select>
+    <select id="queryPictureCount2" resultType="int">
+        SELECT count(id) FROM img WHERE status=1 AND TO_DAYS(NOW()) - TO_DAYS(createtime) &lt;= 1
+    </select>
+    <select id="queryPictureCount7" resultType="int">
+        SELECT count(id) FROM img WHERE status=1 AND DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(createtime)
+    </select>
+    <select id="queryPictureCount30" resultType="int">
+        SELECT count(id) FROM img WHERE status=1 AND DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt;= date(createtime)
+    </select>
+
+    <select id="queryBrandCount" resultType="int">
+        SELECT count(id) FROM brand WHERE status=1
+    </select>
+    <select id="queryBrandCount1" resultType="int">
+        SELECT count(id) FROM brand WHERE status=1 AND TO_DAYS(createtime) = TO_DAYS(NOW())
+    </select>
+    <select id="queryBrandCount2" resultType="int">
+        SELECT count(id) FROM brand WHERE status=1 AND TO_DAYS(NOW()) - TO_DAYS(createtime) &lt;= 1
+    </select>
+    <select id="queryBrandCount7" resultType="int">
+        SELECT count(id) FROM brand WHERE status=1 AND DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(createtime)
+    </select>
+    <select id="queryBrandCount30" resultType="int">
+        SELECT count(id) FROM brand WHERE status=1 AND DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt;= date(createtime)
+    </select>
+
+    <select id="queryProductCount" resultType="int">
+        SELECT count(id) FROM product WHERE status=1
+    </select>
+    <select id="queryProductCount1" resultType="int">
+        SELECT count(id) FROM product WHERE status=1 AND TO_DAYS(createtime) = TO_DAYS(NOW())
+    </select>
+    <select id="queryProductCount2" resultType="int">
+        SELECT count(id) FROM product WHERE status=1 AND TO_DAYS(NOW()) - TO_DAYS(createtime) &lt;= 1
+    </select>
+    <select id="queryProductCount7" resultType="int">
+        SELECT count(id) FROM product WHERE status=1 AND DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(createtime)
+    </select>
+    <select id="queryProductCount30" resultType="int">
+        SELECT count(id) FROM product WHERE status=1 AND DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt;= date(createtime)
+    </select>
+
+    <select id="queryMemberCount" resultType="int">
+        SELECT count(id) FROM member WHERE valid=1
+    </select>
+    <select id="queryMemberCount1" resultType="int">
+        SELECT count(id) FROM member WHERE valid=1 AND TO_DAYS(createtime) = TO_DAYS(NOW())
+    </select>
+    <select id="queryMemberCount2" resultType="int">
+        SELECT count(id) FROM member WHERE valid=1 AND TO_DAYS(NOW()) - TO_DAYS(createtime) &lt;= 1
+    </select>
+    <select id="queryMemberCount7" resultType="int">
+        SELECT count(id) FROM member WHERE valid=1 AND DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(createtime)
+    </select>
+    <select id="queryMemberCount30" resultType="int">
+        SELECT count(id) FROM member WHERE valid=1 AND DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt;= date(createtime)
+    </select>
+
+    <select id="queryUserCount" resultType="int">
+        SELECT count(id) FROM user WHERE valid=1
+    </select>
+    <select id="queryUserCount1" resultType="int">
+        SELECT count(id) FROM user WHERE valid=1 AND TO_DAYS(createtime) = TO_DAYS(NOW())
+    </select>
+    <select id="queryUserCount2" resultType="int">
+        SELECT count(id) FROM user WHERE valid=1 AND TO_DAYS(NOW()) - TO_DAYS(createtime) &lt;= 1
+    </select>
+    <select id="queryUserCount7" resultType="int">
+        SELECT count(id) FROM user WHERE valid=1 AND DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(createtime)
+    </select>
+    <select id="queryUserCount30" resultType="int">
+        SELECT count(id) FROM user WHERE valid=1 AND DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt;= date(createtime)
+    </select>
+
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hwua.common.mapper.UserMapper">
+
+    <insert id="doInsertUser" parameterType="user">
+        INSERT INTO user (username, password, valid) VALUES (#{username},#{password},#{valid})
+    </insert>
+
+    <select id="queryByUsername" parameterType="string" resultType="user">
+        SELECT * FROM user WHERE username=#{username}
+    </select>
+
+    <select id="queryUser" parameterType="user" resultType="user">
+        SELECT * FROM user WHERE username=#{username} AND password=#{password}
+    </select>
+
+    <update id="doUpdatePassword" parameterType="user">
+        UPDATE user SET password=#{password} WHERE id=#{id}
+    </update>
+
+</mapper>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hwua.common.mapper.MemberMapper">
+
+    <select id="queryMemberById" parameterType="int" resultType="member">
+        SELECT * FROM member WHERE id=#{id}
+    </select>
+
+    <select id="queryMemberByName" parameterType="string" resultType="member">
+        SELECT * FROM member WHERE membername=#{membername}
+    </select>
+
+    <select id="queryMemberByEmail" parameterType="string" resultType="member">
+        SELECT * FROM member WHERE email=#{email}
+    </select>
+
+    <select id="queryMember" parameterType="member" resultType="member">
+        SELECT * FROM member WHERE 1=1
+        <if test="membername != null">
+            AND membername=#{membername}
+        </if>
+        <if test="password != null">
+            AND password=#{password}
+        </if>
+    </select>
+
+    <insert id="doInsertMember" parameterType="member">
+        INSERT INTO member (membername,password,email,valid,createtime) VALUES (#{membername},#{password},#{email},1,CURRENT_TIMESTAMP )
+    </insert>
+
+    <update id="doUpdateMemberPassword" parameterType="member">
+        UPDATE member SET membername=#{membername},password=#{password},email=#{email} WHERE id=#{id}
+    </update>
+
+    <select id="queryAllMember" resultType="member">
+        SELECT * FROM member
+    </select>
+
+    <select id="queryMemberByValid" resultType="member">
+        SELECT * FROM member WHERE valid=0
+    </select>
+
+    <update id="doUpdateValid" parameterType="map">
+        UPDATE member SET valid=#{valid} WHERE id=#{id}
+    </update>
+
+    <select id="queryEvaluateByMid" parameterType="int" resultType="map">
+        SELECT evaluate.*,product.name pname,product.image image FROM evaluate,product WHERE evaluate.status=1 AND evaluate.pid=product.id AND evaluate.mid=#{mid}
+    </select>
+
+    <update id="doUpdateEvaluate" parameterType="int">
+        UPDATE evaluate SET status=0 WHERE id=#{id}
+    </update>
+
+</mapper>

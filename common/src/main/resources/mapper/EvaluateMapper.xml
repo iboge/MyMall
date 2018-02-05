@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hwua.common.mapper.EvaluateMapper">
+
+    <select id="queryEvaluate" resultType="map">
+        SELECT evaluate.id id,evaluate.evaluates evaluates,evaluate.createtime createtime,product.image image,product.name pname FROM evaluate,product WHERE evaluate.pid=product.id
+    </select>
+
+    <delete id="doDeleteEvaluate" parameterType="int">
+        DELETE FROM evaluate WHERE id=#{id}
+    </delete>
+
+</mapper>

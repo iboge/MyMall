@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hwua.common.mapper.ProductMapper">
+
+    <select id="queryImg" resultType="map">
+        SELECT * FROM img WHERE status=1
+    </select>
+
+    <select id="queryProductByBid" parameterType="int" resultType="product">
+        SELECT * FROM product WHERE status=1 AND bid=#{bid}
+    </select>
+
+    <resultMap id="queryBrandResultMap" type="map">
+        <id property="id" column="id"/>
+    </resultMap>
+    <select id="queryBrand" resultMap="queryBrandResultMap">
+        SELECT * FROM brand WHERE status=1
+    </select>
+
+    <select id="queryProductByCid" parameterType="int" resultType="product">
+        SELECT * FROM product WHERE status=1 AND cid=#{cid}
+    </select>
+
+    <resultMap id="queryCategoryResultMap" type="map">
+        <id property="id" column="id"/>
+    </resultMap>
+    <select id="queryCategory" resultMap="queryCategoryResultMap">
+        SELECT * FROM category WHERE status=1
+    </select>
+
+    <select id="queryProductById" parameterType="int" resultType="product">
+        SELECT * FROM product WHERE status=1 AND id=#{id}
+    </select>
+
+    <select id="queryProductByName" parameterType="string" resultType="product">
+        SELECT * FROM product WHERE status=1 AND name LIKE CONCAT('%',#{name},'%')
+    </select>
+
+    <select id="queryProductBySales" resultType="product">
+        SELECT * FROM product WHERE status=1 ORDER BY sales DESC
+    </select>
+
+    <select id="queryProduct" resultType="product">
+        SELECT * FROM product WHERE status=1
+    </select>
+
+    <select id="queryProductSales" parameterType="int" resultType="product">
+        SELECT * FROM product WHERE cid=#{cid} AND status=1 ORDER BY sales DESC
+    </select>
+
+    <insert id="doInsertEvaluate" parameterType="evaluate">
+        INSERT INTO evaluate (pid, mid, evaluates, createtime) VALUES (#{pid},#{mid},#{evaluates},CURRENT_TIMESTAMP )
+    </insert>
+
+    <select id="queryEvaluate" parameterType="int" resultType="evaluate">
+        SELECT * FROM evaluate WHERE pid=#{pid} AND mid=#{mid}
+    </select>
+
+    <select id="queryEvaluateByPid" parameterType="int" resultType="evaluate">
+        SELECT * FROM evaluate WHERE pid=#{pid}
+    </select>
+
+    <select id="query" parameterType="map" resultType="product">
+        SELECT * FROM product WHERE status = 1
+        <if test="bid != null">
+            AND bid = #{bid}
+        </if>
+        <if test="cid != null">
+            AND cid = #{cid}
+        </if>
+        ORDER BY id
+        <if test="start != null &amp;&amp; rows != null">
+            LIMIT #{start} ,#{rows}
+        </if>
+    </select>
+
+    <select id="queryCount" parameterType="map" resultType="int">
+        SELECT count(id) FROM product WHERE status = 1
+        <if test="bid != null">
+            AND bid = #{bid}
+        </if>
+        <if test="cid != null">
+            AND cid = #{cid}
+        </if>
+    </select>
+
+    <select id="queryName" parameterType="map" resultType="product">
+        SELECT * FROM product WHERE status = 1 AND name LIKE CONCAT('%',#{name},'%') ORDER BY id
+        <if test="start != null &amp;&amp; rows != null">
+            LIMIT #{start} ,#{rows}
+        </if>
+    </select>
+
+    <select id="queryNameCount" parameterType="map" resultType="int">
+        SELECT count(id) FROM product WHERE status = 1 AND name LIKE CONCAT('%',#{name},'%')
+    </select>
+
+    <select id="queryBA" resultType="map">
+        SELECT * FROM brand
+    </select>
+
+    <select id="queryBCA" resultType="map">
+        SELECT brand.name bname,brand.id bid,category.name cname,category.id cid FROM brand,category_brand,category WHERE brand.id=category_brand.bid AND category.id=category_brand.cid
+    </select>
+
+    <select id="queryBById" parameterType="int" resultType="map">
+        SELECT * FROM brand WHERE id=#{id}
+    </select>
+
+    <select id="queryCById" parameterType="int" resultType="map">
+        SELECT * FROM category WHERE id=#{id}
+    </select>
+
+    <select id="queryCByBid" parameterType="int" resultType="map">
+        SELECT * FROM category,category_brand WHERE category_brand.cid=category.id AND category_brand.bid=#{bid}
+    </select>
+
+    <select id="queryCA" resultType="map">
+        SELECT * FROM category
+    </select>
+
+    <update id="doUpdateBS" parameterType="map">
+        UPDATE brand SET status=#{status} WHERE id=#{id}
+    </update>
+
+    <update id="doUpdateCS" parameterType="map">
+        UPDATE category SET status=#{status} WHERE id=#{id}
+    </update>
+
+    <select id="queryCnameByBid" parameterType="int" resultType="map">
+        SELECT * FROM category_brand,category WHERE category_brand.cid=category.id AND category_brand.bid=#{id}
+    </select>
+
+    <delete id="doDelteCBTable" parameterType="int">
+        DELETE FROM category_brand WHERE category_brand.bid=#{bid}
+    </delete>
+
+    <insert id="doInsertCBTable" parameterType="int">
+        INSERT INTO category_brand (bid,cid) VALUES (#{arg0},#{arg1})
+    </insert>
+
+    <delete id="doDelteCBTable1" parameterType="int">
+        DELETE FROM category_brand WHERE category_brand.cid=#{cid}
+    </delete>
+
+    <insert id="doInsertCBTable1" parameterType="int">
+        INSERT INTO category_brand (cid,bid) VALUES (#{arg0},#{arg1})
+    </insert>
+
+    <insert id="doInsertB" parameterType="string">
+        INSERT INTO brand (name, createtime) VALUES (#{name},CURRENT_TIMESTAMP )
+    </insert>
+
+    <select id="queryByBname" parameterType="string" resultType="map">
+        SELECT * FROM brand WHERE name=#{name}
+    </select>
+
+    <select id="queryBnameByCid" parameterType="int" resultType="map">
+        SELECT * FROM category_brand,brand WHERE category_brand.bid=brand.id AND category_brand.cid=#{id}
+    </select>
+
+    <insert id="doInsertC" parameterType="string">
+        INSERT INTO category (name, createtime) VALUES (#{name},CURRENT_TIMESTAMP )
+    </insert>
+
+    <select id="queryByCname" parameterType="string" resultType="map">
+        SELECT * FROM category WHERE name=#{name}
+    </select>
+
+    <select id="queryAllProduct" resultType="map">
+        SELECT product.*,brand.name bname,category.name cname FROM product,brand,category WHERE product.bid=brand.id AND product.cid=category.id
+    </select>
+
+    <update id="doUpdatePS" parameterType="map">
+        UPDATE product SET status=#{status} WHERE id=#{id}
+    </update>
+
+    <insert id="doInsertProduct" parameterType="product">
+        INSERT INTO product (bid, cid, name, details, price, inventory, image, status, createtime)
+         VALUES (#{bid},#{cid},#{name},#{details},#{price},#{inventory},#{image},1,CURRENT_TIMESTAMP )
+    </insert>
+
+    <select id="queryProductById1" parameterType="int" resultType="map">
+        SELECT product.*,brand.name bname,category.name cname FROM product,category,brand WHERE product.bid=brand.id AND product.cid=category.id AND product.id=#{id}
+    </select>
+
+    <update id="doUpdateProduct" parameterType="product">
+        UPDATE product SET name=#{name},details=#{details},price=#{price},inventory=#{inventory} WHERE id=#{id}
+    </update>
+
+    <update id="doUpdatePimg" parameterType="map">
+        UPDATE product SET image=#{image} WHERE id=#{id}
+    </update>
+
+</mapper>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hwua.common.mapper.PayMapper">
+
+    <select id="queryFavorites" parameterType="favorites" resultType="favorites">
+        SELECT * FROM favorites WHERE valid=1
+        <if test="mid != null">
+            AND mid = #{mid}
+        </if>
+        <if test="pid != null">
+            AND pid = #{pid}
+        </if>
+    </select>
+
+    <insert id="doInsertFavorites" parameterType="favorites">
+        INSERT INTO favorites (mid,pid,valid) VALUES (#{mid},#{pid},1)
+    </insert>
+
+    <select id="queryFavoritesById" parameterType="int" resultType="favorites">
+        SELECT favorites.id id,product.id pid,product.name name,product.price price,product.image image
+        FROM favorites,product WHERE valid=1 AND status=1
+        AND favorites.pid=product.id AND mid = #{mid};
+    </select>
+
+    <update id="doUpdateFavorites" parameterType="int">
+        UPDATE favorites SET valid=0 WHERE id=#{id}
+    </update>
+
+    <select id="queryCartByP" parameterType="int" resultType="memberCart">
+        SELECT * FROM member_cart WHERE valid=1
+        <if test="mid!=null">
+            AND mid=#{mid}
+        </if>
+        <if test="pid!=null">
+            AND pid=#{pid}
+        </if>
+    </select>
+
+    <update id="doUpdateCartQuantity" parameterType="memberCart">
+        UPDATE member_cart SET quantity=#{quantity} WHERE id=#{id}
+    </update>
+
+    <insert id="doInsertCart" parameterType="memberCart">
+        INSERT INTO member_cart (mid, pid, quantity, valid) VALUES (#{mid},#{pid},1,1)
+    </insert>
+
+    <select id="quertCart" parameterType="int" resultType="memberCart">
+        SELECT member_cart.id id,member_cart.quantity quantity,product.id pid,product.price price,product.image image,product.name name
+        FROM member_cart,product WHERE valid=1 AND status=1
+        AND member_cart.pid=product.id AND mid=#{mid}
+    </select>
+
+    <select id="queryCartById" parameterType="int" resultType="memberCart">
+        SELECT * FROM member_cart WHERE id=#{id}
+    </select>
+
+    <update id="doUpdateCart" parameterType="memberCart">
+        UPDATE member_cart SET valid=0 WHERE valid=1
+        <if test="id!=null">
+            AND id=#{id}
+        </if>
+        <if test="mid!=null">
+            AND mid=#{mid}
+        </if>
+    </update>
+
+    <insert id="doInsertOrder" parameterType="orders" useGeneratedKeys="true" keyProperty="oid">
+        INSERT INTO orders (mid, createtime, valid) VALUES (#{mid},CURRENT_TIMESTAMP,1)
+    </insert>
+
+    <insert id="doInsertOrderDetail" parameterType="orders">
+        INSERT INTO order_detail (oid, pid, price, quantity, name, tel, addr) VALUES (#{oid},#{pid},#{price},#{quantity},#{name},#{tel},#{addr})
+    </insert>
+
+    <update id="doUpdateOrder" parameterType="int">
+        UPDATE orders SET valid=0 WHERE id=#{id}
+    </update>
+
+    <select id="queryOrders" parameterType="int" resultType="map">
+        SELECT orders.id id,orders.createtime createtime,order_detail.pid pid,product.name pname,product.image image,
+        order_detail.price price,order_detail.quantity quantity,order_detail.name rname,order_detail.tel tel,order_detail.addr addr
+        FROM order_detail,orders,product WHERE orders.valid=1 AND orders.id=order_detail.oid
+        AND order_detail.pid=product.id AND orders.mid=#{mid} ORDER BY createtime DESC
+    </select>
+
+    <select id="queryOrder" parameterType="int" resultType="map">
+        SELECT DISTINCTROW orders.id id,orders.mid mid,orders.createtime createtime,order_detail.name rname,order_detail.addr addr FROM orders,order_detail WHERE orders.id=order_detail.oid AND valid=1 AND mid=#{mid} ORDER BY createtime DESC
+    </select>
+
+    <insert id="doInsertAddress" parameterType="recipientInfo">
+        INSERT INTO recipient_info (mid,name,tel,addr) VALUES (#{mid},#{name},#{tel},#{addr})
+    </insert>
+
+    <select id="queryAddress" parameterType="int" resultType="recipientInfo">
+        SELECT * FROM recipient_info WHERE valid=1 AND mid=#{mid}
+    </select>
+
+    <update id="doUpdateAddress" parameterType="recipientInfo">
+        UPDATE recipient_info SET name=#{name},tel=#{tel},addr=#{addr} WHERE mid=#{mid}
+    </update>
+
+    <update id="doDeleteAddress" parameterType="int">
+        UPDATE recipient_info SET valid=0 WHERE id=#{id}
+    </update>
+
+    <update id="doUpdateInventory" parameterType="int">
+        UPDATE product SET inventory=inventory-#{inventory} WHERE id=#{id}
+    </update>
+
+    <update id="doUpdateSales" parameterType="int">
+        UPDATE product SET sales=sales+#{sales} WHERE id=#{id}
+    </update>
+
+    <update id="doUpdateStatus" parameterType="int">
+        UPDATE product SET status=0 WHERE id=#{id}
+    </update>
+
+    <select id="queryOrderByOid" parameterType="int" resultType="orders">
+        SELECT * FROM order_detail WHERE oid=#{oid}
+    </select>
+
+    <select id="queryOrderdetailByOid" parameterType="int" resultType="map">
+        SELECT order_detail.id id,order_detail.pid pid,order_detail.oid oid,order_detail.name rname,order_detail.tel tel,order_detail.addr addr,
+        order_detail.quantity quantity,order_detail.price price,product.image image,product.name pname
+        FROM order_detail,product WHERE order_detail.pid=product.id AND oid=#{oid}
+    </select>
+
+    <update id="doUpdateOrderAddr" parameterType="orders">
+        UPDATE order_detail SET name=#{name},tel=#{tel},addr=#{addr} WHERE oid=#{oid}
+    </update>
+
+    <select id="queryRecipientInfo" parameterType="int" resultType="recipientInfo">
+        SELECT * FROM recipient_info WHERE id=#{id}
+    </select>
+
+    <update id="doDeleteRecipientInfo" parameterType="int">
+        UPDATE recipient_info SET valid=0 WHERE id=#{id}
+    </update>
+
+    <update id="doUpdateRecipientInfo" parameterType="recipientInfo">
+        UPDATE recipient_info SET name=#{name},tel=#{tel},addr=#{addr} WHERE id=#{id}
+    </update>
+
+</mapper>
