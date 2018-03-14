@@ -4,7 +4,7 @@
     </div>
     <div class="footer-bd ">
         <p>
-            <span> mall模拟商城 作者：LB-PC(模板之家) 上海海文（济宁）基地 2018年1月11号</span>
+            <span> mall模拟商城 作者：LB-PC(模板之家) 2018年</span>
         </p>
     </div>
 </div>
